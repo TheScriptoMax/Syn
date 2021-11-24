@@ -1,9 +1,5 @@
-import {useEffect, useState} from 'react'
 import styled from 'styled-components';
-import RegisterModal from '../modal/RegisterModal';
-import LoginModal from '../modal/LoginModal';
 import Logo from './Logo';
-import { useApi } from '../context/ApiProvider';
 import AuthNav from './AuthNav';
 import UserNav from './UserNav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,9 +7,12 @@ import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { device } from '../styles/mediaqueries';
 import Burger from './Burger';
 
-interface HeaderTypes {
+type HeaderTypes = {
   handleBurger:(toggle:boolean)=>void;
   toggleBurger:boolean;
+  handleShowModal:(modal:string)=>void;
+  isAuth:boolean
+
 }
 
 const HeaderContainer = styled.header`
@@ -45,31 +44,8 @@ const DotsButton =styled.button`
 `
 
 
-const Header:React.FC<HeaderTypes> = ({handleBurger,toggleBurger}) => {
-  const {api} = useApi()
-  const [showSignup, setShowSignup] = useState<boolean>(false)
-  const [showSignin, setShowSigin] = useState<boolean>(false)
+const Header:React.FC<HeaderTypes> = ({handleBurger,toggleBurger,handleShowModal,isAuth}) => {
   
-
-  const isAuth = false
-
-  useEffect(()=>{
-    api.get(`/user`).then(res=>{
-      console.log(res)
-    })
-  },[])
-
-  const handleShowModal = (modal:string) => {
-    if ( modal === "signup"){
-      showSignin && setShowSigin(!showSignin);
-      setShowSignup(!showSignup) ;
-    }
-    if ( modal === 'signin'){
-      showSignup && setShowSignup(!showSignup);
-      setShowSigin(!showSignin)
-    }
-
-  }
 
 
     return (
@@ -88,12 +64,7 @@ const Header:React.FC<HeaderTypes> = ({handleBurger,toggleBurger}) => {
               </HeaderNav>
             
           </HeaderContainer>
-          {
-            showSignup && <RegisterModal/>
-          }
-          {
-            showSignin && <LoginModal/>
-          }
+          
            
         </>
     )

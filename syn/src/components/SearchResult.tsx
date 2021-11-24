@@ -31,8 +31,11 @@ const ResultWrapper = styled.ul`
     @media ${device.tablet}{
         grid-template-columns: repeat(3, minmax(21.5rem,1fr));      
     }
-    @media ${device.desktop}{
-        grid-template-columns: repeat(5, 1fr);      
+    @media ${device.laptop}{
+        grid-template-columns: repeat(4, minmax(21.5rem,1fr));      
+    }
+    @media ${device.laptopL}{
+        grid-template-columns: repeat(5, minmax(23.5rem,1fr));  ;    
     }
 `
 

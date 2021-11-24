@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import styled from 'styled-components';
-import { device } from '../styles/mediaqueries';
+
 
 /* interface ActiveId {
     id:number;

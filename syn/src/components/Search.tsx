@@ -36,15 +36,17 @@ const Search:React.FC = () => {
     useEffect(() => {
         handleSearch()
         
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[searchInput])
 
     const handleSearch = () => {
-        const searchSplit = searchInput.split(' ')
+        const searchSplit = searchInput.split(' ').filter(elem=>elem!=='')
+        console.log(searchSplit)
         const searchQuery = searchSplit.join('+')
         api.get(`/api/v1/scripts?script=${searchQuery}`)
         .then(res=>{
-            console.log(res.data.script)
-            setSearchResult(res.data.script)
+            const topScoreResult =res.data.script.filter((elem:SearchResultType)=>elem._score >= searchSplit.length)
+            setSearchResult(topScoreResult)
         })
     }
 

@@ -38,7 +38,7 @@ router.post('/signup',userValidationRules(),validate, async(req,res)=>{
             const email = doc.email
             const username = doc.username
             sendEmailConfirm(id,username,email)
-            res.status(201).json("User created")
+            res.status(201).json({msg:"User created",isPending:true})
         })
     } catch (error) {
         console.log(error)

@@ -1,4 +1,4 @@
-- Modale connexion
+
 - pages profil
 - pages modifier profil
 - routes d'accès back
@@ -7,7 +7,8 @@
 - rotation de token 
 - securation avec les silent refresh 
 - Finir la maquette
-- optimiser elastic search
+- optimiser elastic search : algo en fonctin du score de recherche
+- voir le password
 
 
 
