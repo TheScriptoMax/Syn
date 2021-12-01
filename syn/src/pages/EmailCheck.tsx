@@ -19,7 +19,7 @@ const EmailCheck = () => {
     })
     
     setTimeout(()=>{
-        navigate("/");
+        navigate("/home");
     },5000)
 
     return (

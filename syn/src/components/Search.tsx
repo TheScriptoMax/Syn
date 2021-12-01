@@ -41,7 +41,6 @@ const Search:React.FC = () => {
 
     const handleSearch = () => {
         const searchSplit = searchInput.split(' ').filter(elem=>elem!=='')
-        console.log(searchSplit)
         const searchQuery = searchSplit.join('+')
         api.get(`/api/v1/scripts?script=${searchQuery}`)
         .then(res=>{

@@ -6,13 +6,33 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { device } from '../styles/mediaqueries';
 import Burger from './Burger';
+import { useAuth } from '../context/AuthProvider';
+
+/* interface Payload {
+  username:string;
+  id:string;
+  iat:number;
+  exp:number
+
+}
+
+interface Expired {
+  expiredAt: string;
+  message: string;
+  name: string;
+}
+
+interface IsAuthType {
+  isAuth:boolean;
+  payload:Payload;
+  expired:Expired;
+} */
 
 type HeaderTypes = {
   handleBurger:(toggle:boolean)=>void;
   toggleBurger:boolean;
   handleShowModal:(modal:string)=>void;
-  isAuth:boolean
-
+  isAccepted:boolean
 }
 
 const HeaderContainer = styled.header`
@@ -44,9 +64,7 @@ const DotsButton =styled.button`
 `
 
 
-const Header:React.FC<HeaderTypes> = ({handleBurger,toggleBurger,handleShowModal,isAuth}) => {
-  
-
+const Header:React.FC<HeaderTypes> = ({handleBurger,toggleBurger,handleShowModal,isAccepted}) => {
 
     return (
         <>
@@ -54,7 +72,7 @@ const Header:React.FC<HeaderTypes> = ({handleBurger,toggleBurger,handleShowModal
               <Burger handleBurger={(toggle:boolean)=>handleBurger(toggle)} toggleBurger={toggleBurger}/>
               <Logo/>
               <HeaderNav>
-                { isAuth ?
+                { isAccepted ?
                   <UserNav/>
                   :
                   <AuthNav handleShowModal={(modal)=>handleShowModal(modal)}/>

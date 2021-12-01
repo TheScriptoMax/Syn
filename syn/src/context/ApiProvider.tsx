@@ -7,8 +7,6 @@ interface AppContextInterface {
     api:AxiosInstance;
 }
 
-
-
 const Api = createContext<AppContextInterface|null>(null)
 
 const ApiUri = process.env.REACT_APP_API_URL
@@ -20,14 +18,6 @@ const ApiProvider:React.FC = ({children}) => {
         withCredentials:true,
         
     })
-
-    /* const endPoints= {
-        auth: {
-            signup:`/api/v1/auth/signup`
-        }
-    } */
-
-
 
     return (
         <Api.Provider value={{

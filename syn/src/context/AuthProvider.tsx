@@ -1,4 +1,4 @@
-import React,{useState,createContext, useContext} from 'react';
+import React,{useState,createContext, useContext,useEffect} from 'react';
 import { useApi } from '../context/ApiProvider' 
 
 /* interface SignUp {
@@ -6,11 +6,29 @@ import { useApi } from '../context/ApiProvider'
     email:string;
     password:string;
 } */
+interface Payload {
+    username:string;
+    id:string;
+    iat:number;
+    exp:number
+
+}
+interface Expired {
+    expiredAt: string;
+    message: string;
+    name: string;
+}
+interface CurrentUserType {
+    isAuth:boolean;
+    payload:Payload;
+    expired:Expired;
+}
+
 interface AppContextInterface {
     error:any;
     signUp:(username:string,email:string,password:string)=> void;
     signIn:(login:string,password:string)=>void;
-    isAuth:boolean;
+    currentUser:CurrentUserType|undefined;
 } 
 
 
@@ -20,8 +38,9 @@ const AuthProvider:React.FC = ({children}) => {
 
     const {api} = useApi()
 
-    const [isAuth,setIsAuth] = useState<boolean>(false)
+    const [currentUser,setCurrentUser] = useState<CurrentUserType|undefined>()
     const [error, setError] = useState<AppContextInterface|null>(null)
+    const [loading, setLoading] = useState<boolean>(false)
 
     const signUp = (username:string,email:string,password:string) => {
         return api.post(`/api/v1/auth/signup`,{
@@ -35,29 +54,40 @@ const AuthProvider:React.FC = ({children}) => {
                 setError(err.response.data.error[0].msg)
             })
     }
-    const signIn = (login:string,password:string)=>{
-        api.post('/api/v1/auth/signin',{
-            login,
-            password,
-        }).then((res=>{
-            if(res.data.auth){
-                console.log(res.data)
-                localStorage.setItem('accessToken',res.data.accessToken)
-                localStorage.setItem('refreshToken',res.data.refreshToken)
-                setIsAuth(true)
-            }
-        })).catch(err=>{
-            console.log(err.response)
+    const signIn =  (login:string,password:string)=>{
+        return new Promise<void>((resolve, reject) => {
+            setLoading(true)  
+            api.post('/api/v1/auth/signin',{
+                login,
+                password,
+            }).then((res=>{
+                if(res.data){
+                    console.log(res.data)
+                    resolve(res.data)
+                    setLoading(false)
+                }
+            })).catch(err=>{
+                console.log(err.response)
+                /* reject(err) */
+            })
         })
     }
 
-    
+    useEffect(() => {
+        api.get('/api/v1/auth').then(res=>{
+            if(res.data){
+                console.log(res.data)
+                setCurrentUser(res.data)
+            }
+        })
+    },[])
+
     return (
         <Auth.Provider value={{
             error,
             signUp,
             signIn,
-            isAuth
+            currentUser
             }}>
             {children}
         </Auth.Provider>

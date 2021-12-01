@@ -50,6 +50,7 @@ const Span = styled.span`
 
 
 const AuthNav:React.FC<AuthNavTypes> = ({children,handleShowModal}) => {
+    
     return (
         <Nav>
             <Button onClick={()=>handleShowModal("signup")}><FontAwesomeIcon icon={faPenSquare} /><Span>Sign Up</Span></Button>

@@ -1,7 +1,7 @@
 
-import React,{useState,useEffect} from 'react'
+import React,{useState} from 'react'
 import styled from 'styled-components'
-import { useAuth } from '../context/AuthProvider'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faSignInAlt,faTimes } from '@fortawesome/free-solid-svg-icons';
 import { device } from '../styles/mediaqueries';
@@ -10,6 +10,7 @@ type LoginPropsTypes = {
     handleShowModal:(modal:string)=>void;
     handleCloseModal:(modal:boolean)=>void;
     modal:boolean;
+    handleSignIn:(login:string,password:string)=>void
 }
 const ShadowBackground=styled.div`
     position: absolute;
@@ -122,40 +123,45 @@ const RegisterButton = styled.button`
     }
 `
 
-const LoginModal:React.FC<LoginPropsTypes> = ({handleShowModal,handleCloseModal,modal}) => {
-    const {signIn} = useAuth()
-
+const LoginModal:React.FC<LoginPropsTypes> = ({
+    handleShowModal,
+    handleCloseModal,
+    modal,
+    handleSignIn
+}) => {
     const [login, setLogin] = useState<string>('')
     const [password, setPassword] = useState<string>('')
-    
-
-    const handleSignIn = () =>{
-        signIn(login,password)
-    }
-    
-    /* useEffect(() => {
-        if(modal){
-            document.body.style.overflow = 'hidden'
-        }else{
-            document.body.style.overflow = 'unset';
-        }
-    }, []) */
     
     return (
         <ShadowBackground>
             <Container>
                 <ModalHeader>
                     <Title>Connexion</Title>
-                    <CloseButton onClick={()=>handleCloseModal(!modal)}><FontAwesomeIcon icon={faTimes} /></CloseButton>
+                    <CloseButton onClick={()=>handleCloseModal(!modal)}>
+                            <FontAwesomeIcon icon={faTimes} />
+                    </CloseButton>
                 </ModalHeader>
                 <StyledForm onSubmit={(e:React.FormEvent<HTMLFormElement>)=>e.preventDefault()}>
                     <Label>Login</Label>
-                    <StyledInput placeholder="email@exemple.com ou xxdarksasuke37xx" value={login} onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setLogin(e.target.value)}/>
+                    <StyledInput 
+                        placeholder="email@exemple.com ou xxdarksasuke37xx" 
+                        value={login} 
+                        onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setLogin(e.target.value)}
+                    />
                     <Label>Mot de passe</Label>
-                    <StyledInput placeholder="Mot de passe" type={password} value={password} onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setPassword(e.target.value)}/>
-                    <Button onClick={()=>handleSignIn()} ><FontAwesomeIcon icon={faSignInAlt} /><Span>Se connecter</Span></Button>
+                    <StyledInput 
+                        placeholder="Mot de passe" 
+                        type="password" value={password} 
+                        onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setPassword(e.target.value)}
+                    />
+                    <Button onClick={()=>handleSignIn(login,password)}>
+                        <FontAwesomeIcon icon={faSignInAlt} />
+                        <Span>Se connecter</Span>
+                    </Button>
                 </StyledForm>
-                <P>Pas de compte ? <RegisterButton onClick={()=>handleShowModal("signup")}>S'inscrire</RegisterButton></P>
+                <P>Pas de compte ? 
+                    <RegisterButton onClick={()=>handleShowModal("signup")}>S'inscrire</RegisterButton>
+                </P>
                 
             </Container>
         </ShadowBackground>

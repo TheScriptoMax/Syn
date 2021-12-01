@@ -8,19 +8,13 @@ const helmet = require('helmet');
 require('dotenv').config();
 require('./database/dbconfig')
 
-
-
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cors({credentials: true, origin:'http://localhost:3000'}))
 app.use(helmet())
 
- 
-
 // désactive l'en tête qui permet de detecter les applications utilisé par express
 app.disable('x-powered-by')
-
-
 
 let port = process.env.PORT || 8080
 

@@ -9,7 +9,9 @@ const {sendEmailConfirm} = require('../middleware/emailConfirm');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-
+router.get('/',authenticateToken, async(req,res)=>{
+    res.send(req.isLogged)
+})
 
 router.post('/signup',userValidationRules(),validate, async(req,res)=>{
     const { username, email, password } = req.body;
@@ -41,7 +43,6 @@ router.post('/signup',userValidationRules(),validate, async(req,res)=>{
             res.status(201).json({msg:"User created",isPending:true})
         })
     } catch (error) {
-        console.log(error)
         res.status(500).send({msg:error});
         return
     }
@@ -54,7 +55,6 @@ router.get('/confirmation/:token',async(req,res)=>{
         const {token} = req.params
         JWT.verify(token,process.env.EMAIL_SECRET,async(err,user)=>{
             if(err){
-                console.log(err)
                 return res.sendStatus(401);
             }
             await User.findOneAndUpdate({_id:user.userId},{confirmed:true})
@@ -106,10 +106,11 @@ router.post('/signin', async (req,res)=>{
     const refreshToken = generateRefreshToken(user.username,user._id)
 
     res.status(200).cookie('accesToken',accessToken,{
-        maxAge:900000,
+        maxAge:90000000,
         secure:true,
         httpOnly:true,
         sameSite:'strict',
+        expiresIn:9000000000
     }).send({auth:true})
    
 });

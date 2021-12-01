@@ -1,19 +1,5 @@
 const mongoose = require('mongoose')
-
 const Schema = mongoose.Schema;
-
-
-const contributionSchema =  new Schema({
-    user:{
-        type:String,
-        required:true,
-        unique:true
-    },
-    message:{
-        type:String,
-        required:true
-    }
-})
 
 const scriptSchema = new Schema({
     titre:{
@@ -36,17 +22,30 @@ const scriptSchema = new Schema({
         type:String,
         required:true
     }],
-    type:{
+    format:{
         type:String,
         required:true
     },
     reader:[String],
     likes:[String],
-    contribution:[contributionSchema]
-
+    /* contribution:[contributionSchema] */
+    
 },{timestamps:true})
 
 
 const Script = mongoose.model('script',scriptSchema)
 
 module.exports = {Script,scriptSchema}
+
+/* const contributionSchema =  new Schema({
+    user:{
+        type:String,
+        required:true,
+        unique:true
+    },
+    message:{
+        type:String,
+        required:true
+    }
+})
+ */
