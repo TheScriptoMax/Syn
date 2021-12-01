@@ -111,9 +111,19 @@ router.post('/signin', async (req,res)=>{
         httpOnly:true,
         sameSite:'strict',
         expiresIn:9000000000
-    }).send({auth:true})
+    }).send({isAuth:true})
    
 });
+
+
+router.get('/logout', async(req,res)=>{
+    try {
+        console.log("yeah")
+        res.status(200).clearCookie('accesToken',{path:'/'});
+    } catch (error) {
+        console.log(error)
+    }
+})
 
 
 

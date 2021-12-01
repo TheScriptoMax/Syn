@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import Logo from './Logo';
 import AuthNav from './AuthNav';
 import UserNav from './UserNav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { device } from '../styles/mediaqueries';
 import Burger from './Burger';
-import { useAuth } from '../context/AuthProvider';
+import {useNavigate} from "react-router-dom";
+
 
 /* interface Payload {
   username:string;
@@ -62,30 +62,41 @@ const DotsButton =styled.button`
     display:block;
   }
 `
-
+const Logo = styled.div`
+    /* border: 1px solid red; */
+    cursor: pointer;
+    flex-grow:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    @media ${device.tablet}{
+        justify-content:flex-start
+    }
+`
 
 const Header:React.FC<HeaderTypes> = ({handleBurger,toggleBurger,handleShowModal,isAccepted}) => {
+  
+  const navigate = useNavigate()
+  return (
+    <>
+      <HeaderContainer>
+        <Burger handleBurger={(toggle:boolean)=>handleBurger(toggle)} toggleBurger={toggleBurger}/>
+        <Logo onClick={()=>navigate('/home')}>LOGO</Logo>
+        <HeaderNav>
+          { isAccepted ?
+            <UserNav/>
+            :
+            <AuthNav handleShowModal={(modal)=>handleShowModal(modal)}/>
 
-    return (
-        <>
-          <HeaderContainer>
-              <Burger handleBurger={(toggle:boolean)=>handleBurger(toggle)} toggleBurger={toggleBurger}/>
-              <Logo/>
-              <HeaderNav>
-                { isAccepted ?
-                  <UserNav/>
-                  :
-                  <AuthNav handleShowModal={(modal)=>handleShowModal(modal)}/>
-
-                }
-                <DotsButton><FontAwesomeIcon icon={faEllipsisV} /></DotsButton>
-              </HeaderNav>
-            
-          </HeaderContainer>
-          
-           
-        </>
-    )
+          }
+          <DotsButton><FontAwesomeIcon icon={faEllipsisV} /></DotsButton>
+        </HeaderNav>
+        
+      </HeaderContainer>
+      
+        
+    </>
+  )
 }
 
 export default Header ;

@@ -28,24 +28,9 @@ const scriptSchema = new Schema({
     },
     reader:[String],
     likes:[String],
-    /* contribution:[contributionSchema] */
+    
     
 },{timestamps:true})
 
 
-const Script = mongoose.model('script',scriptSchema)
-
-module.exports = {Script,scriptSchema}
-
-/* const contributionSchema =  new Schema({
-    user:{
-        type:String,
-        required:true,
-        unique:true
-    },
-    message:{
-        type:String,
-        required:true
-    }
-})
- */
+module.exports = {scriptSchema}

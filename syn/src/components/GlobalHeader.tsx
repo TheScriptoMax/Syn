@@ -39,13 +39,10 @@ const GlobalHeader = () => {
     
     useEffect(()=>{
         
-        if(currentUser){
-            if(currentUser.isAuth){
-                setIsAccepted(true)
-                setLoading(true)
-            }else{
-                setLoading(false)
-            }
+        if(currentUser?.isAuth){
+            setIsAccepted(true)
+            setLoading(true)
+            
         }else{
             setLoading(false)
         }
@@ -65,8 +62,8 @@ const GlobalHeader = () => {
 
     const handleSignIn = (login:string,password:string)=>{
         signIn(login,password)
+        setShowSignin(!showSignin)
     }
-
     return (
         <>
             <Header handleBurger={(toggle)=>setToggleBurger(toggle)} toggleBurger={toggleBurger} handleShowModal={(modal)=>handleShowModal(modal)} isAccepted={isAccepted}/>

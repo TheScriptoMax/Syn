@@ -1,8 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash,faPen } from '@fortawesome/free-solid-svg-icons';
+import { useApi } from '../context/ApiProvider';
+type Data = {
+    createdAt:string;
+    format:string;
+    logline:string;
+    pitch:string;
+    status:string;
+    titre:string;
+    updatedAt:string;
+    __v:number;
+    _id:string;
+    genre:[string];
+    likes:[string?];
+    reader:[string?];
+}
+
+type ScriptDataType = {
+    data:Data
+}
 
 const ScriptContainer = styled.li`
-    max-width:39,6rem;
+    max-width:38rem;
     aspect-ratio:1/1;
     display:flex;
     flex-direction:column;
@@ -72,6 +93,7 @@ const Tag = styled.li`
 const StatsWrapper = styled.div`
     display:flex;
     justify-content:flex-start;
+    align-items:center;
 `;
 
 const Reader = styled.p`
@@ -79,31 +101,43 @@ const Reader = styled.p`
 `;
 
 const Contribute =styled.p`
-
+    margin-right:12rem;
 `;
 
-const Scripts:React.FC = () => {
+const Icon = styled(FontAwesomeIcon) `
+    margin-right:1.8rem;
+`
+const Scripts:React.FC<ScriptDataType> = ({data}) => {
+    const {api} = useApi()
+
+    const handleDelete = (id:string) =>{
+        api.delete(`/user/scripts/${id}`)
+    }
+
     return (
         <ScriptContainer>
             <HeadWrapper>
                 <TitleWrapper>
-                    <Title>Titre</Title>
-                    <Format>Court</Format>
+                    <Title>{data.titre}</Title>
+                    <Format>{data.format}</Format>
                 </TitleWrapper>
                 <StatusWrapper>
-                    <Status>Public</Status>
+                    <Status>{data.status}</Status>
                 </StatusWrapper>
             </HeadWrapper>
             <LogLineWrapper>
-                <LogLine>Dans l'espace, personne ne vous entend crier</LogLine>
+                <LogLine>{data.logline}</LogLine>
             </LogLineWrapper>
             <TagsWrapper>
-                <Tag>Action</Tag>
-                <Tag>Aventure</Tag>
+                {data.genre.map((elem:any,index:number)=>{
+                    return <Tag key={index}>{elem}</Tag>
+                }) }
             </TagsWrapper>
             <StatsWrapper>
-                <Reader>3 lecteurs</Reader>
-                <Contribute>1 contribution </Contribute>
+                <Reader>{data.reader.length} lecteurs</Reader>
+                <Contribute>{data.likes.length} j'aime </Contribute>
+                <Icon icon={faTrash} onClick={()=>handleDelete(data._id)} />
+                <FontAwesomeIcon icon={faPen} />
             </StatsWrapper>
         </ScriptContainer>
     )

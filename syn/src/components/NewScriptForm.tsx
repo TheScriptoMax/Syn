@@ -115,7 +115,6 @@ const NewScriptForm = () => {
             genres,
             format,
             status:selectedRadio
-
         }
         await api.post('/user/scripts',script).then(async (res)=>{
             console.log(res)

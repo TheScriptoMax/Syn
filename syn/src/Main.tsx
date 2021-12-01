@@ -20,8 +20,8 @@ const Main:React.FC = () => {
         <>
             <Routes>
                 <Route path="/home" element={<Home/>}/>
-                <Route path="/user/:username" element={<Profil/>}/>
-                <Route path="/new" element={<NewScripts/>}/>
+                <Route path="/user/:username" element={currentUser ? (<Profil/>):(<Navigate to="/home" />)}/>
+                <Route path="/new" element={currentUser ? (<NewScripts/>):(<Navigate to="/home" />)}/>
             </Routes>
 
 

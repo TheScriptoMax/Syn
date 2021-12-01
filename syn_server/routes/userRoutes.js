@@ -29,23 +29,25 @@ router.get('/scripts',authenticateToken,async(req,res)=>{
 
 router.post('/scripts',authenticateToken,async(req,res)=>{
     const {title,logline,pitch,genres,format,status} = req.body
-    const newScript = new Script({
+    const newScript = {
         titre:title,
         status:status,
         logline:logline,
         pitch:pitch,
         genre:genres,
         format:format,
-    })
+    }
     console.log('new: ',newScript)
     try {
-        await newScript.save(async (err,doc)=>{
-            await Profil.findByIdAndUpdate({_id:req.isLogged.payload.id},{$push:{scripts:doc}})
-        })
-        res.status(200).json({
-            msg:'Script ajouté'
-        })
+        console.log('try: ')
+        await Profil.findByIdAndUpdate(req.isLogged.payload.id,{$push:{scripts:newScript}}).then(
+
+            res.status(200).json({
+                msg:'Script ajouté'
+            })
+        )
     } catch (error) {
+        console.log('error: ',error)
         res.status(500).json({
             msg:'Error',
             error
@@ -80,13 +82,14 @@ router.put('/scripts/:id',authenticateToken,async (req,res)=>{
 router.delete('/scripts/:id',authenticateToken,async(req,res)=>{
     const {id} = req.params
     try {
-        await Script.findByIdAndDelete({_id:id}).then(async()=>{
-            await Profil.findByIdAndUpdate({_id:req.isLogged.payload.id},{$pull:{scripts:{_id:id}}})
+        
+        await Profil.findByIdAndUpdate({_id:req.isLogged.payload.id},{$pull:{scripts:{_id:id}}})
             res.status(200).json({
                 msg:'Script effacé'
             })
-        })
+        
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             msg:'Error',
             error

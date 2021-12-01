@@ -17,7 +17,7 @@ const Hero = styled.div`
 const HeroHome = () => {
     return (
         <Hero>
-            salut
+            
         </Hero>
     )
 }

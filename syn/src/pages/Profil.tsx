@@ -38,10 +38,30 @@ const Button = styled.button`
 const ContentWrapper = styled.div`
     display:flex;
     flex-direction:column;
+    width:100%;
 `
 
 const ScriptWrapper = styled.div`
+    padding: 8rem 0 0 8rem;
+    width:100%;
+`
+const ScriptWrapperHeader = styled.div`
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:2rem;
+    padding-bottom:1rem;
+    border-bottom:1px solid #000000;
+` 
+const ScriptsWrapperTitle = styled.h3`
+    font-size:2.4rem;
+`
+const ScriptListWrapper =styled.ul`
 
+    width:100%;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap:2rem;
 `
 
 const Profil = () => {
@@ -69,9 +89,13 @@ const Profil = () => {
                     </SideBar>
                     <ContentWrapper>
                         <ScriptWrapper>
-                            <AddScripts/>
-                            <Scripts/>
-                            {scripts && scripts.map((elem:any)=><p>{elem.titre}</p>)}
+                            <ScriptWrapperHeader>
+                                <ScriptsWrapperTitle>Mes Scripts</ScriptsWrapperTitle>
+                                <AddScripts/>
+                            </ScriptWrapperHeader>
+                            <ScriptListWrapper>
+                                {scripts && scripts.map((elem:any)=><Scripts key={elem._id} data={elem} />)}
+                            </ScriptListWrapper>
                         </ScriptWrapper>
                     </ContentWrapper>
                 </ProfilWrapper>

@@ -60,7 +60,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     /* Remove default padding */
-    ul[class],
+    ul,
     ol[class] {
     padding: 0;
     }

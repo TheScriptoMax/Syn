@@ -29,6 +29,7 @@ interface AppContextInterface {
     signUp:(username:string,email:string,password:string)=> void;
     signIn:(login:string,password:string)=>void;
     currentUser:CurrentUserType|undefined;
+    logout:()=>void;
 } 
 
 
@@ -54,6 +55,17 @@ const AuthProvider:React.FC = ({children}) => {
                 setError(err.response.data.error[0].msg)
             })
     }
+
+    const getUser =()=>{
+        return api.get('/api/v1/auth').then(res=>{
+            if(res.data){
+                console.log(res.data)
+                setCurrentUser(res.data)
+            }
+        })
+        
+    }
+
     const signIn =  (login:string,password:string)=>{
         return new Promise<void>((resolve, reject) => {
             setLoading(true)  
@@ -62,32 +74,40 @@ const AuthProvider:React.FC = ({children}) => {
                 password,
             }).then((res=>{
                 if(res.data){
-                    console.log(res.data)
-                    resolve(res.data)
+                    console.log(res)
                     setLoading(false)
+                    return getUser()
                 }
             })).catch(err=>{
                 console.log(err.response)
-                /* reject(err) */
+            })
+        })
+    }
+
+    const logout = ()=>{
+        return new Promise<void>((resolve,reject)=>{
+            api.get('api/v1/auth/logout')
+            .then((res)=>{
+                console.log(res)
+                setCurrentUser(undefined)
+                return getUser()
+            }).catch(err=>{
+                console.log(err.response)
             })
         })
     }
 
     useEffect(() => {
-        api.get('/api/v1/auth').then(res=>{
-            if(res.data){
-                console.log(res.data)
-                setCurrentUser(res.data)
-            }
-        })
-    },[])
+        getUser()
+    }, [])
 
     return (
         <Auth.Provider value={{
             error,
             signUp,
             signIn,
-            currentUser
+            currentUser,
+            logout
             }}>
             {children}
         </Auth.Provider>
