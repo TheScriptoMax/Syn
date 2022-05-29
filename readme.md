@@ -1,1 +1,1 @@
-Project of social network for writers
+Back end jury project - Auth and elastic search
